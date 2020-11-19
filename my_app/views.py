@@ -1,25 +1,13 @@
-from flask import Flask, render_template, flash
+from flask import render_template, flash
 from flask import session, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
 
-app = Flask(__name__)
-
-# Flask用这个秘钥保护用户会话，以防被篡改
-app.config['SECRET_KEY'] = 'hard to guess string' 
+from my_app.forms import NameForm
+from my_app import app
 
 bootstrap = Bootstrap(app)
-
 moment = Moment(app)
-
-# 创建Form
-class NameForm(FlaskForm):
-    name = StringField('What is your name?', validators=[DataRequired()]) # 验证器确保提交的数据字段内容不为空或满足一定条件
-    submit = SubmitField('Submit')
-
 
 @app.errorhandler(404)
 def page_not_found(e):
