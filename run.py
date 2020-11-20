@@ -1,6 +1,5 @@
 from my_app import app, db
 from my_app.catalog.models import User, Role
-
 from flask_migrate import Migrate
 
 migrate = Migrate(app, db)
@@ -11,4 +10,4 @@ def make_shell_context():
     return dict(db=db, User=User, Role=Role)
 
 if __name__ == "__main__":
-    app.run(port=8080, debug=True)
+    app.run(port=8080)

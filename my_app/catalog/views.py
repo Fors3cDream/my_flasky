@@ -3,10 +3,18 @@ from flask import session, redirect, url_for
 from my_app.catalog.models import User
 from my_app.catalog.forms import NameForm
 from flask import Blueprint
+from flask_mail import Message
 from my_app import db
 
 app_blue = Blueprint("app_blue", __name__)
 
+
+def send_email(to, subject, template, **kwargs):
+    msg = Message('[Flasky]' + subject, sender="xionx20@sina.com", recipients=[to])
+    msg.body = render_template(template+'.txt', **kwargs)
+    msg.html = render_template(template+'.html', **kwargs)
+    from my_app import mail
+    mail.send(msg)
 
 @app_blue.errorhandler(404)
 def page_not_found(e):
@@ -28,11 +36,14 @@ def index():
     form = NameForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.name.data).first()
+        print(user)
         if user is None:
             user = User(username=form.name.data)
             db.session.add(user)
             db.session.commit()
             session['known'] = False
+            print("New User! Send email to admin!")
+            send_email('xionx20@sina.cn', 'New User', 'mail/new_user', user=user)
         else:
             session['known'] = True
         # old_name = session.get('name')

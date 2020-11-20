@@ -3,16 +3,18 @@ import os
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail
 
 app = Flask(__name__)
 
-bootstrap = Bootstrap(app)
-moment = Moment(app)
-
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-from my_app.config import DevConfig
-app.config.from_object(DevConfig)
+from my_app.config import config
+app.config.from_object(config['Dev'])
+
+bootstrap = Bootstrap(app)
+moment = Moment(app)
+mail = Mail(app)
 
 # app = Flask(__name__)
 db = SQLAlchemy(app)
