@@ -22,8 +22,10 @@ def create_app(config_name):
 
     # 添加路由和自定义的错误页面
     
-    from .main import main as main_blueprint
+    from app.main import main as main_blueprint
+    from app.auth import auth as auth_blueprint
 
     app.register_blueprint(main_blueprint)
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     return app
